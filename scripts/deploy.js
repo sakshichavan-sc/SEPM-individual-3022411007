@@ -15,7 +15,7 @@ async function main() {
   const output = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
 
   // 2. Extract the ABI and Bytecode for YieldVault
-  const contractName = "YieldVault";
+  const contractName = "defi";
   const sourceFile = Object.keys(output.contracts).find(key => key.includes(contractName));
   
   if (!sourceFile) {
@@ -50,7 +50,7 @@ async function main() {
   // 5. Define constructor arguments
   // Sepolia USDC test address used as an example. Replace if using your own token.
   const assetAddress = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238"; 
-  const name = "Yield Vault Share";
+  const name = "defi";
   const symbol = "yvSHARE";
   const initialOwner = wallet.address;
   const feeRecipient = wallet.address;
