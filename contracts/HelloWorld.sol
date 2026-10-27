@@ -3,5 +3,6 @@ pragma solidity ^0.8.20;
 
 contract Helloworld{
     string public greet = "kya bolti public,bohot hard";
+    string public sak = "sakshi is a good girl";
     
 }
