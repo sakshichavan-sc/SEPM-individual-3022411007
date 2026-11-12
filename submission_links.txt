@@ -3,3 +3,12 @@ https://github.com/sakshichavan-sc/SEPM-individual-3022411007
 
 GitHub Actions Workflow Run:
 https://github.com/sakshichavan-sc/SEPM-individual-3022411007/actions/runs/39617425063
+
+**Part 2 – Sepolia Deployment**
+
+- Network: Sepolia Ethereum Testnet
+- Contract: Helloworld
+- Contract Address: `0x986fDa4031e46A27366544f3c95477e56843C4FC`
+- Transaction Hash: `0x4d00eb0720742a3c04b7dc488282a3e03cef2db6bd2dc937a98a86f59357de1d`
+- Etherscan: https://sepolia.etherscan.io/address/0x986fDa4031e46A27366544f3c95477e56843C4FC
+- GitHub Actions: https://github.com/sakshichavan-sc/SEPM-individual-3022411007/actions
