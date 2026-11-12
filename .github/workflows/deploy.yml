@@ -1,3 +1,4 @@
+
 name: Compile and Deploy to Sepolia
 
 on:
@@ -5,6 +6,9 @@ on:
   push:
     branches:
       - main
+
+permissions:
+  contents: read
 
 jobs:
   deploy:
@@ -19,17 +23,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22 # Required for Hardhat 3 compatibility
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      # 1. Generate solc input
       - name: Generate solc standard-JSON input
         run: node scripts/build-input.cjs
 
-      # 2. Compile contracts exactly like your local environment
       - name: Compile contracts in Docker
         run: |
           docker run --rm -i \
@@ -39,13 +41,28 @@ jobs:
             --standard-json --base-path /app --include-path /app/node_modules \
             < build/input.json > build/output.json
 
-      # 3. Check for compilation errors
-      - name: Fail on compiler errors
+      - name: Check compiler errors
         run: |
           jq -e '[.errors[]? | select(.severity == "error")] | length == 0' build/output.json \
             || { echo "::error::Solidity compilation failed"; jq '.errors' build/output.json; exit 1; }
 
-      # 4. Deploy using standard Node.js (bypasses Hardhat)
+      - name: Verify deployment secrets
+        env:
+          SEPOLIA_RPC_URL: ${{ secrets.SEPOLIA_RPC_URL }}
+          SEPOLIA_PRIVATE_KEY: ${{ secrets.SEPOLIA_PRIVATE_KEY }}
+        run: |
+          if [ -z "$SEPOLIA_RPC_URL" ]; then
+            echo "::error::SEPOLIA_RPC_URL is missing"
+            exit 1
+          fi
+
+          if [ -z "$SEPOLIA_PRIVATE_KEY" ]; then
+            echo "::error::SEPOLIA_PRIVATE_KEY is missing"
+            exit 1
+          fi
+
+          echo "Both deployment secrets are available."
+
       - name: Deploy to Sepolia
         run: node scripts/deploy.js
         env:
